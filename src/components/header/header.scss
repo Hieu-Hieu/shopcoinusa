@@ -1,0 +1,10 @@
+.header {
+  height: var(--header-height);
+  background-color: #000;
+  &__logo {
+    img {
+      max-width: 20rem;
+      max-height: var(--header-height);
+    }
+  }
+}

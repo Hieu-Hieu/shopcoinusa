@@ -1,0 +1,29 @@
+@use "../../assets/scss/mixin" as *;
+
+.footer {
+  &__top {
+    display: flex;
+    justify-content: space-around;
+
+    @include mobile {
+      display: none;
+    }
+  }
+  ul {
+    li {
+      list-style-type: none;
+      margin-bottom: 5px;
+      span {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .copyright {
+    text-align: center;
+    padding: 20px 0;
+    border-top: solid 1px var(--form-border-color);
+    margin-top: 30px;
+  }
+}
