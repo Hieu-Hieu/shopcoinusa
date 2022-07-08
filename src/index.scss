@@ -5,7 +5,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background);
 }
 
 code {
@@ -20,6 +19,7 @@ code {
   --btn-bg: #f59e0b;
   --text-primary: black;
   --text-secondary: #ef4444;
+  --text-third: #0c0c0c;
   --text-white: white;
   --header-height: 66px;
   --mobile-width: 768px;
@@ -28,11 +28,12 @@ code {
 }
 
 [data-theme="dark"] {
-  --background: black;
-  --header-bg: white;
-  --form-bg: white;
-  --text-primary: white;
-  --text-secondary: grey;
+  --background: #181a20;
+  --header-bg: #181a20;
+  --form-bg: #181a20;
+  --text-primary: #eaecef;
+  --text-secondary: #ef4444;
+  --text-third: #e7bdc6;
 }
 
 * {
@@ -48,4 +49,7 @@ a {
 button {
   cursor: pointer;
   border: 0;
+}
+.app {
+  background-color: var(--background);
 }

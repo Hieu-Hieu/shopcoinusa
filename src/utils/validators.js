@@ -1,7 +1,9 @@
 export const emailValidator = (email) => {
   if (!email) {
     return "Email is required";
-  } else if (!new RegExp(/\S+@\S+\.\S+/).test(email)) {
+  } else if (
+    !new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email)
+  ) {
     return "Your email address is not correct";
   }
   return "";

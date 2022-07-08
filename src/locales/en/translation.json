@@ -1,0 +1,14 @@
+{
+    "content": {
+        "Login_Title": "LOG IN TO YOUR ACCOUNT",
+        "Password": "Password",
+        "Login": "Login",
+        "Forgot_Your_Password":"Forgot your password?",
+        "Register":"Register",
+        "Dont_Have_Account": "Don't have an account?",
+        "Privacy_Notice":"Privacy Notice",
+        "Cookies_Notice":"Cookies Notice",
+        "Cookies_Settings":"Cookies Settings"
+       
+    }
+}

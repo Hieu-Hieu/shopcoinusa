@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useTranslation } from "react-i18next";
 
 import { useLoginFormValidator } from "../../hooks/useLoginFormValidator";
 import { suggestEmail } from "../../utils/emailsSuggest";
+import { fakeAuthentication } from "../../data/account";
 import "./login.scss";
 
 function Login() {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailsSuggest, setEmailsSuggest] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { errors, validateForm, onBlurField } = useLoginFormValidator({
     email,
@@ -40,22 +46,44 @@ function Login() {
     }
   };
 
+  const captchaRef = useRef(null);
+  const navigate = useNavigate();
   const onSubmitForm = (e) => {
     e.preventDefault();
-    const { isValid } = validateForm({
-      form: { email, password },
-      errors,
-      forceTouchErrors: true,
-    });
-    if (!isValid) return;
-    alert(JSON.stringify({ email, password }, null, 2));
+    const token = captchaRef.current.getValue();
+    if (token) {
+      // console.log(token);
+
+      const { isValid } = validateForm({
+        form: { email, password },
+        errors,
+        forceTouchErrors: true,
+      });
+      if (!isValid) return;
+
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        const data = fakeAuthentication(email, password);
+        if (data === "success") {
+          navigate("/");
+        } else {
+          setErrorMessage(data);
+        }
+      }, 2000);
+
+      captchaRef.current.reset();
+    } else {
+      setErrorMessage("Please check recapcha!");
+      setTimeout(() => setErrorMessage(""), 5000);
+    }
   };
 
   return (
     <div className="login">
       <div className="login__container">
         <div className="login__content">
-          <h6 className="login__title">LOG IN TO YOUR ACCOUNT</h6>
+          <h6 className="login__title">{t("content.Login_Title")}</h6>
           <form className="login__form" onSubmit={onSubmitForm}>
             <div className="login__form-item">
               <label htmlFor="email">Email</label>
@@ -103,7 +131,7 @@ function Login() {
               ) : null}
             </div>
             <div className="login__form-item">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t("content.Password")}</label>
               <div className="input-password">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -124,17 +152,21 @@ function Login() {
             </div>
             <div className="login__form-item">
               <div className="login__capcha">
-                <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_KEY} />
+                <ReCAPTCHA
+                  sitekey={process.env.REACT_APP_SITE_KEY}
+                  ref={captchaRef}
+                />
               </div>
             </div>
             <div className="login__form-item">
               <button className="login__form-btn" type="submit" tabIndex="0">
-                Login
+                {loading ? "Loading..." : t("content.Login")}
               </button>
+              {errorMessage && <span>{errorMessage}</span>}
             </div>
             <div className="login__form-item">
               <a className="login__form-link" href="/">
-                Forgot your password?
+                {t("content.Forgot_Your_Password")}
               </a>
             </div>
           </form>
@@ -142,12 +174,13 @@ function Login() {
 
         <div className="login__footer">
           <div>
-            Don't have an account?<a href="/"> Register </a>
+            {t("content.Dont_Have_Account")}
+            <a href="/"> {t("content.Register")}</a>
           </div>
           <div>
-            <a href="/">Privacy Notice</a>
-            <a href="/">Cookies Notice</a>
-            <a href="/">Cookies Settings</a>
+            <a href="/">{t("content.Privacy_Notice")}</a>
+            <a href="/">{t("content.Cookies_Notice")}</a>
+            <a href="/">{t("content.Cookies_Settings")}</a>
           </div>
         </div>
       </div>
